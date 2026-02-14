@@ -1,606 +1,0 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>مصادر أخبار مصر</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --black: #0a0a0a;
-      --white: #f5f0e8;
-      --red: #c8102e;
-      --gold: #c9a84c;
-      --green: #1a6b3c;
-      --blue: #1a3d6b;
-      --gray: #2a2a2a;
-    }
-
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-
-    body {
-      background: var(--black);
-      color: var(--white);
-      font-family: 'Cairo', sans-serif;
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
-
-    /* Hero */
-    .hero {
-      background: linear-gradient(135deg, #0a0a0a 0%, #1a0a05 50%, #0a0a0a 100%);
-      border-bottom: 3px solid var(--gold);
-      padding: 50px 30px 40px;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero::before {
-      content: '';
-      position: absolute;
-      top: -50px; left: 50%;
-      transform: translateX(-50%);
-      width: 400px; height: 400px;
-      background: radial-gradient(circle, rgba(201,168,76,0.12) 0%, transparent 70%);
-      pointer-events: none;
-    }
-
-    .hero-flag {
-      font-size: 2.5rem;
-      margin-bottom: 12px;
-      animation: pulse 2s ease-in-out infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.05); }
-    }
-
-    .hero h1 {
-      font-family: 'Amiri', serif;
-      font-size: clamp(2rem, 5vw, 3.5rem);
-      font-weight: 700;
-      color: var(--gold);
-      letter-spacing: 2px;
-      line-height: 1.2;
-      text-shadow: 0 0 40px rgba(201,168,76,0.3);
-    }
-
-    .hero-sub {
-      margin-top: 10px;
-      font-size: 1rem;
-      color: rgba(245,240,232,0.5);
-      letter-spacing: 1px;
-    }
-
-    .hero-bar {
-      width: 80px; height: 3px;
-      background: linear-gradient(90deg, var(--red), var(--gold));
-      margin: 20px auto 0;
-      border-radius: 2px;
-    }
-
-    /* Filter tabs */
-    .filter-section {
-      padding: 30px 30px 10px;
-      text-align: center;
-    }
-
-    .filter-tabs {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      justify-content: center;
-    }
-
-    .tab {
-      padding: 8px 20px;
-      border: 1.5px solid rgba(201,168,76,0.3);
-      border-radius: 30px;
-      background: transparent;
-      color: rgba(245,240,232,0.7);
-      cursor: pointer;
-      font-family: 'Cairo', sans-serif;
-      font-size: 0.9rem;
-      font-weight: 600;
-      transition: all 0.25s ease;
-    }
-
-    .tab:hover, .tab.active {
-      background: var(--gold);
-      border-color: var(--gold);
-      color: var(--black);
-    }
-
-    /* Grid */
-    .container {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 30px 20px 60px;
-    }
-
-    .section-title {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      margin: 40px 0 20px;
-    }
-
-    .section-title .icon {
-      width: 44px; height: 44px;
-      border-radius: 12px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.3rem;
-      flex-shrink: 0;
-    }
-
-    .section-title h2 {
-      font-size: 1.3rem;
-      font-weight: 700;
-      letter-spacing: 0.5px;
-    }
-
-    .section-title .line {
-      flex: 1;
-      height: 1px;
-      background: rgba(245,240,232,0.1);
-    }
-
-    .cards-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 16px;
-    }
-
-    .card {
-      background: #141414;
-      border: 1px solid rgba(255,255,255,0.06);
-      border-radius: 16px;
-      padding: 22px 20px;
-      transition: all 0.3s ease;
-      text-decoration: none;
-      display: block;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .card::before {
-      content: '';
-      position: absolute;
-      top: 0; right: 0;
-      width: 4px; height: 100%;
-      border-radius: 0 16px 16px 0;
-      transition: opacity 0.3s;
-      opacity: 0.6;
-    }
-
-    .card:hover {
-      border-color: rgba(201,168,76,0.3);
-      transform: translateY(-4px);
-      box-shadow: 0 12px 40px rgba(0,0,0,0.4);
-    }
-
-    .card:hover::before { opacity: 1; }
-
-    /* Category color accents */
-    .cat-general::before { background: var(--gold); }
-    .cat-political::before { background: var(--red); }
-    .cat-economic::before { background: var(--green); }
-    .cat-international::before { background: var(--blue); }
-    .cat-tech::before { background: #7c3aed; }
-
-    .card-emoji { font-size: 1.8rem; margin-bottom: 12px; }
-
-    .card-name {
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--white);
-      margin-bottom: 6px;
-    }
-
-    .card-desc {
-      font-size: 0.83rem;
-      color: rgba(245,240,232,0.5);
-      line-height: 1.6;
-      margin-bottom: 14px;
-    }
-
-    .tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-bottom: 16px;
-    }
-
-    .tag {
-      font-size: 0.72rem;
-      padding: 3px 10px;
-      border-radius: 20px;
-      font-weight: 600;
-      background: rgba(255,255,255,0.06);
-      color: rgba(245,240,232,0.6);
-    }
-
-    .tag.highlight {
-      background: rgba(201,168,76,0.15);
-      color: var(--gold);
-    }
-
-    .card-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 0.82rem;
-      color: var(--gold);
-      font-weight: 600;
-      text-decoration: none;
-      border: 1px solid rgba(201,168,76,0.25);
-      padding: 7px 14px;
-      border-radius: 8px;
-      transition: all 0.2s;
-    }
-
-    .card-link:hover {
-      background: rgba(201,168,76,0.12);
-      border-color: var(--gold);
-    }
-
-    /* Note */
-    .note-box {
-      margin: 40px 0 0;
-      padding: 22px 24px;
-      background: rgba(201,168,76,0.06);
-      border: 1px solid rgba(201,168,76,0.2);
-      border-radius: 16px;
-      font-size: 0.88rem;
-      color: rgba(245,240,232,0.6);
-      line-height: 1.8;
-    }
-
-    .note-box strong { color: var(--gold); }
-
-    /* Hidden class for filter */
-    .section-block { transition: opacity 0.3s; }
-    .section-block.hidden { display: none; }
-
-    @media (max-width: 600px) {
-      .hero { padding: 40px 20px 30px; }
-      .cards-grid { grid-template-columns: 1fr; }
-    }
-  </style>
-</head>
-<body>
-
-  <div class="hero">
-    <div class="hero-flag">🇪🇬</div>
-    <h1>مصادر أخبار مصر</h1>
-    <p class="hero-sub">دليل شامل للمنصات الإخبارية الموثوقة · 2025-2026</p>
-    <div class="hero-bar"></div>
-  </div>
-
-  <div class="filter-section">
-    <div class="filter-tabs">
-      <button class="tab active" onclick="filterAll(this)">الكل</button>
-      <button class="tab" onclick="filterSection(this, 'general')">📰 عامة</button>
-      <button class="tab" onclick="filterSection(this, 'political')">🏛️ سياسة</button>
-      <button class="tab" onclick="filterSection(this, 'economic')">📊 اقتصاد</button>
-      <button class="tab" onclick="filterSection(this, 'international')">🌍 دولية</button>
-      <button class="tab" onclick="filterSection(this, 'tech')">💻 تقنية ومتخصصة</button>
-    </div>
-  </div>
-
-  <div class="container">
-
-    <!-- General -->
-    <div class="section-block" id="sec-general">
-      <div class="section-title">
-        <div class="icon" style="background:rgba(201,168,76,0.15); color:var(--gold);">📰</div>
-        <h2 style="color:var(--gold);">أخبار عامة شاملة</h2>
-        <div class="line"></div>
-      </div>
-      <div class="cards-grid">
-
-        <a class="card cat-general" href="https://www.almasryalyoum.com" target="_blank">
-          <div class="card-emoji">🗞️</div>
-          <div class="card-name">المصري اليوم</div>
-          <div class="card-desc">من أكبر وأهم الصحف المصرية المستقلة. يغطي السياسة والاقتصاد والمجتمع والرياضة.</div>
-          <div class="tags">
-            <span class="tag highlight">الأكثر موثوقية</span>
-            <span class="tag">سياسة</span>
-            <span class="tag">اقتصاد</span>
-            <span class="tag">مجتمع</span>
-          </div>
-          <span class="card-link">🔗 almasryalyoum.com</span>
-        </a>
-
-        <a class="card cat-general" href="https://akhbarelyom.com" target="_blank">
-          <div class="card-emoji">📋</div>
-          <div class="card-name">بوابة أخبار اليوم</div>
-          <div class="card-desc">بوابة إخبارية مصرية شاملة تغطي أخبار اليوم بشكل متجدد مع تقارير مصورة وفيديوهات.</div>
-          <div class="tags">
-            <span class="tag">عاجل</span>
-            <span class="tag">تقارير</span>
-            <span class="tag">فيديو</span>
-          </div>
-          <span class="card-link">🔗 akhbarelyom.com</span>
-        </a>
-
-        <a class="card cat-general" href="https://www.elwatannews.com" target="_blank">
-          <div class="card-emoji">🏠</div>
-          <div class="card-name">الوطن</div>
-          <div class="card-desc">بوابة إخبارية شاملة تغطي مصر والعالم العربي والعالم. سياسة واقتصاد وفن ورياضة.</div>
-          <div class="tags">
-            <span class="tag">شامل</span>
-            <span class="tag">سياسة</span>
-            <span class="tag">رياضة</span>
-          </div>
-          <span class="card-link">🔗 elwatannews.com</span>
-        </a>
-
-        <a class="card cat-general" href="https://www.elbalad.news" target="_blank">
-          <div class="card-emoji">📡</div>
-          <div class="card-name">صدى البلد</div>
-          <div class="card-desc">موقع إخباري مصري يقدم أخبار عاجلة ومتنوعة على مدار الساعة بتغطية واسعة.</div>
-          <div class="tags">
-            <span class="tag">عاجل</span>
-            <span class="tag">محليات</span>
-            <span class="tag">متنوع</span>
-          </div>
-          <span class="card-link">🔗 elbalad.news</span>
-        </a>
-
-        <a class="card cat-general" href="https://www.masrawy.com" target="_blank">
-          <div class="card-emoji">📱</div>
-          <div class="card-name">مصراوي</div>
-          <div class="card-desc">بوابة إخبارية ترفيهية شاملة. من أكثر المواقع زيارةً في مصر. أخبار وترفيه وخدمات.</div>
-          <div class="tags">
-            <span class="tag highlight">الأكثر زيارة</span>
-            <span class="tag">ترفيه</span>
-            <span class="tag">خدمات</span>
-          </div>
-          <span class="card-link">🔗 masrawy.com</span>
-        </a>
-
-        <a class="card cat-general" href="https://gate.ahram.org.eg" target="_blank">
-          <div class="card-emoji">📜</div>
-          <div class="card-name">بوابة الأهرام</div>
-          <div class="card-desc">البوابة الإلكترونية لأعرق صحيفة مصرية. تغطية رسمية وعميقة لكل الأحداث المحلية والدولية.</div>
-          <div class="tags">
-            <span class="tag highlight">الأقدم والأعرق</span>
-            <span class="tag">رسمي</span>
-            <span class="tag">تحليلات</span>
-          </div>
-          <span class="card-link">🔗 gate.ahram.org.eg</span>
-        </a>
-
-      </div>
-    </div>
-
-    <!-- Political -->
-    <div class="section-block" id="sec-political">
-      <div class="section-title">
-        <div class="icon" style="background:rgba(200,16,46,0.15); color:var(--red);">🏛️</div>
-        <h2 style="color:var(--red);">أخبار سياسية</h2>
-        <div class="line"></div>
-      </div>
-      <div class="cards-grid">
-
-        <a class="card cat-political" href="https://www.almasryalyoum.com/section/12" target="_blank">
-          <div class="card-emoji">🗳️</div>
-          <div class="card-name">المصري اليوم – سياسة</div>
-          <div class="card-desc">قسم السياسة في المصري اليوم. تقارير وتحليلات عن القرارات الحكومية والبرلمان والأحزاب.</div>
-          <div class="tags">
-            <span class="tag highlight">تحليلات عمق</span>
-            <span class="tag">حكومة</span>
-            <span class="tag">برلمان</span>
-          </div>
-          <span class="card-link">🔗 almasryalyoum.com/section/12</span>
-        </a>
-
-        <a class="card cat-political" href="https://www.elwatannews.com/news/section/1" target="_blank">
-          <div class="card-emoji">🏦</div>
-          <div class="card-name">الوطن – سياسة</div>
-          <div class="card-desc">أخبار سياسية مصرية وعربية، قرارات الحكومة، وتصريحات المسؤولين بشكل يومي.</div>
-          <div class="tags">
-            <span class="tag">حكومة</span>
-            <span class="tag">عربي</span>
-            <span class="tag">يومي</span>
-          </div>
-          <span class="card-link">🔗 elwatannews.com</span>
-        </a>
-
-        <a class="card cat-political" href="https://www.ajnet.me/where/mideast/arab/egypt/" target="_blank">
-          <div class="card-emoji">🌐</div>
-          <div class="card-name">الجزيرة – مصر</div>
-          <div class="card-desc">تغطية الجزيرة للشأن المصري. مفيدة لمادة الترجمة لأنها تتناول الأحداث من زوايا مختلفة.</div>
-          <div class="tags">
-            <span class="tag highlight">زاوية مختلفة</span>
-            <span class="tag">تحليل</span>
-            <span class="tag">دولي</span>
-          </div>
-          <span class="card-link">🔗 ajnet.me</span>
-        </a>
-
-      </div>
-    </div>
-
-    <!-- Economic -->
-    <div class="section-block" id="sec-economic">
-      <div class="section-title">
-        <div class="icon" style="background:rgba(26,107,60,0.15); color:#2ecc71;">📊</div>
-        <h2 style="color:#2ecc71;">أخبار اقتصادية</h2>
-        <div class="line"></div>
-      </div>
-      <div class="cards-grid">
-
-        <a class="card cat-economic" href="https://www.youm7.com/Section/Index/36" target="_blank">
-          <div class="card-emoji">💰</div>
-          <div class="card-name">اليوم السابع – اقتصاد</div>
-          <div class="card-desc">أحد أكبر المواقع المصرية. قسم الاقتصاد يغطي البورصة والعملات والأسعار والمشاريع.</div>
-          <div class="tags">
-            <span class="tag highlight">تحديث لحظي</span>
-            <span class="tag">بورصة</span>
-            <span class="tag">عملات</span>
-          </div>
-          <span class="card-link">🔗 youm7.com</span>
-        </a>
-
-        <a class="card cat-economic" href="https://www.alarabiya.net/economy" target="_blank">
-          <div class="card-emoji">📈</div>
-          <div class="card-name">العربية – اقتصاد</div>
-          <div class="card-desc">تغطية شاملة للاقتصاد المصري والإقليمي. أسعار النفط والذهب والدولار وقرارات البنك المركزي.</div>
-          <div class="tags">
-            <span class="tag">بنك مركزي</span>
-            <span class="tag">ذهب</span>
-            <span class="tag">دولار</span>
-          </div>
-          <span class="card-link">🔗 alarabiya.net/economy</span>
-        </a>
-
-        <a class="card cat-economic" href="https://akhbarelyom.com/subjects/subjectdetails/1000/اقتصاد" target="_blank">
-          <div class="card-emoji">🏪</div>
-          <div class="card-name">أخبار اليوم – اقتصاد</div>
-          <div class="card-desc">أخبار الأسواق والأسعار والاستثمار ومتابعة الأوضاع الاقتصادية المصرية بشكل يومي.</div>
-          <div class="tags">
-            <span class="tag">أسواق</span>
-            <span class="tag">استثمار</span>
-            <span class="tag">أسعار</span>
-          </div>
-          <span class="card-link">🔗 akhbarelyom.com</span>
-        </a>
-
-        <a class="card cat-economic" href="https://www.amwalalghad.com" target="_blank">
-          <div class="card-emoji">📉</div>
-          <div class="card-name">أموال الغد</div>
-          <div class="card-desc">موقع متخصص في الأخبار الاقتصادية والمالية المصرية. بورصة واستثمارات وبنوك وشركات.</div>
-          <div class="tags">
-            <span class="tag highlight">متخصص اقتصادي</span>
-            <span class="tag">بورصة</span>
-            <span class="tag">بنوك</span>
-          </div>
-          <span class="card-link">🔗 amwalalghad.com</span>
-        </a>
-
-      </div>
-    </div>
-
-    <!-- International -->
-    <div class="section-block" id="sec-international">
-      <div class="section-title">
-        <div class="icon" style="background:rgba(26,61,107,0.2); color:#5b9bd5;">🌍</div>
-        <h2 style="color:#5b9bd5;">منصات دولية تغطي مصر</h2>
-        <div class="line"></div>
-      </div>
-      <div class="cards-grid">
-
-        <a class="card cat-international" href="https://www.alarabiya.net/arab-and-world/egypt" target="_blank">
-          <div class="card-emoji">📺</div>
-          <div class="card-name">العربية – مصر</div>
-          <div class="card-desc">قناة العربية الإخبارية. تغطية شاملة للشأن المصري من منظور إقليمي. مفيد لمواد الترجمة.</div>
-          <div class="tags">
-            <span class="tag highlight">تغطية إقليمية</span>
-            <span class="tag">فيديو</span>
-            <span class="tag">تحليل</span>
-          </div>
-          <span class="card-link">🔗 alarabiya.net</span>
-        </a>
-
-        <a class="card cat-international" href="https://arabic.rt.com/egypt/" target="_blank">
-          <div class="card-emoji">🔴</div>
-          <div class="card-name">RT عربي – مصر</div>
-          <div class="card-desc">الموقع العربي لقناة روسيا اليوم. يقدم أخبار مصر من زاوية مختلفة ومفيد للمقارنة بين المصادر.</div>
-          <div class="tags">
-            <span class="tag">زاوية مختلفة</span>
-            <span class="tag">دولي</span>
-          </div>
-          <span class="card-link">🔗 arabic.rt.com/egypt</span>
-        </a>
-
-        <a class="card cat-international" href="https://www.bbc.com/arabic/topics/c2lej05lz1lt" target="_blank">
-          <div class="card-emoji">🇬🇧</div>
-          <div class="card-name">BBC عربي – مصر</div>
-          <div class="card-desc">تغطية BBC لأخبار مصر بالعربية. ممتاز لمادة الترجمة الصحفية والأسلوب الإخباري الدولي.</div>
-          <div class="tags">
-            <span class="tag highlight">مفيد للترجمة</span>
-            <span class="tag">موثوق</span>
-            <span class="tag">دولي</span>
-          </div>
-          <span class="card-link">🔗 bbc.com/arabic</span>
-        </a>
-
-      </div>
-    </div>
-
-    <!-- Tech / Specialized -->
-    <div class="section-block" id="sec-tech">
-      <div class="section-title">
-        <div class="icon" style="background:rgba(124,58,237,0.15); color:#a78bfa;">💻</div>
-        <h2 style="color:#a78bfa;">تقنية وترجمة متخصصة</h2>
-        <div class="line"></div>
-      </div>
-      <div class="cards-grid">
-
-        <a class="card cat-tech" href="https://www.youm7.com/Section/Index/92" target="_blank">
-          <div class="card-emoji">🤖</div>
-          <div class="card-name">اليوم السابع – علوم وتكنولوجيا</div>
-          <div class="card-desc">قسم التكنولوجيا في اليوم السابع. أخبار التقنية والذكاء الاصطناعي والابتكارات الحديثة في مصر.</div>
-          <div class="tags">
-            <span class="tag">ذكاء اصطناعي</span>
-            <span class="tag">تقنية</span>
-            <span class="tag">علوم</span>
-          </div>
-          <span class="card-link">🔗 youm7.com</span>
-        </a>
-
-        <a class="card cat-tech" href="https://www.masrawy.com/tech" target="_blank">
-          <div class="card-emoji">📲</div>
-          <div class="card-name">مصراوي – تكنولوجيا</div>
-          <div class="card-desc">أخبار التكنولوجيا والإنترنت والتطبيقات بالعربية. مفيد لمادة أساسيات التكنولوجيا الرقمية.</div>
-          <div class="tags">
-            <span class="tag">إنترنت</span>
-            <span class="tag">تطبيقات</span>
-            <span class="tag">رقمي</span>
-          </div>
-          <span class="card-link">🔗 masrawy.com/tech</span>
-        </a>
-
-        <a class="card cat-tech" href="https://www.arabic.tech" target="_blank">
-          <div class="card-emoji">⚡</div>
-          <div class="card-name">عربي.تك</div>
-          <div class="card-desc">موقع متخصص في أخبار التكنولوجيا والشركات الناشئة باللغة العربية. مفيد للترجمة التقنية.</div>
-          <div class="tags">
-            <span class="tag highlight">متخصص تقني</span>
-            <span class="tag">شركات ناشئة</span>
-            <span class="tag">ترجمة تقنية</span>
-          </div>
-          <span class="card-link">🔗 arabic.tech</span>
-        </a>
-
-      </div>
-    </div>
-
-    <div class="note-box">
-      <strong>💡 نصيحة للدراسة:</strong> بما إنك بتدرس ترجمة متخصصة، حاول تقرأ نفس الخبر من مصدرين — مثلاً <strong>BBC عربي</strong> مع <strong>المصري اليوم</strong>، أو <strong>العربية</strong> مع <strong>الأهرام</strong>. هيساعدك تشوف الفرق في الأسلوب الصحفي والمصطلحات المستخدمة. ده مهارة أساسية في ترجمة الأخبار! 🎓
-    </div>
-
-  </div>
-
-  <script>
-    function filterAll(btn) {
-      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-      btn.classList.add('active');
-      document.querySelectorAll('.section-block').forEach(s => s.classList.remove('hidden'));
-    }
-
-    function filterSection(btn, id) {
-      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-      btn.classList.add('active');
-      document.querySelectorAll('.section-block').forEach(s => {
-        s.classList.toggle('hidden', s.id !== 'sec-' + id);
-      });
-    }
-  </script>
-
-</body>
-</html>
